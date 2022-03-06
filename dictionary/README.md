@@ -19,3 +19,7 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/dictionary>.
 
+## Notes
+
+--werl may be permanently enabled by setting the IEX_WITH_WERL environment variable.
+
