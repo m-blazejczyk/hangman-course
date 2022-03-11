@@ -14,8 +14,13 @@ defmodule Hangman.Impl.Game do
 
   @spec new_game :: Game.t()
   def new_game do
+    new_game(Dictionary.random_word())
+  end
+
+  @spec new_game(String.t()) :: Game.t()
+  def new_game(word) do
     %Hangman.Impl.Game{
-      letters: Dictionary.random_word() |> String.codepoints()
+      letters: word |> String.codepoints()
     }
   end
 end
