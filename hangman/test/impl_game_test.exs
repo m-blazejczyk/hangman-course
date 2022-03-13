@@ -26,4 +26,25 @@ defmodule HangmanImplGameTest do
       assert new_game == game
     end
   end
+
+  test "Guessed letters are added to used letters" do
+    game = Game.new_game("hello")
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state != :already_used
+    {game, _tally} = Game.make_move(game, "y")
+    assert game.game_state != :already_used
+    {game, _tally} = Game.make_move(game, "z")
+    assert game.game_state != :already_used
+    assert MapSet.equal?(game.used, MapSet.new(["x", "y", "z"]))
+  end
+
+  test "Guessing a letter twice is detected" do
+    game = Game.new_game("hello")
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state != :already_used
+    {game, _tally} = Game.make_move(game, "y")
+    assert game.game_state != :already_used
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state == :already_used
+  end
 end
