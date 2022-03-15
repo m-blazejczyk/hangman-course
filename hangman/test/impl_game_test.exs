@@ -97,7 +97,7 @@ defmodule HangmanImplGameTest do
         "q",
         :lost,
         0,
-        ["_", "e", "l", "l", "o"],
+        ["h", "e", "l", "l", "o"],
         ["a", "e", "k", "l", "m", "n", "o", "p", "q", "s"]
       ]
     ]
