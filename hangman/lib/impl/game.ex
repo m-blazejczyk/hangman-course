@@ -51,7 +51,25 @@ defmodule Hangman.Impl.Game do
 
   defp accept_guess(game, guess, _already_used = false) do
     %{game | used: MapSet.put(game.used, guess)}
+    |> score_guess(Enum.member?(game.letters, guess))
   end
+
+  defp score_guess(game, _correct_guess = true) do
+    # guessed all letters?
+    new_state = maybe_won(MapSet.subset?(MapSet.new(game.letters), game.used))
+    %{game | game_state: new_state}
+  end
+
+  defp score_guess(game = %__MODULE__{turns_left: 1}, _bad_guess) do
+    %{game | turns_left: 0, game_state: :lost}
+  end
+
+  defp score_guess(game, _bad_guess) do
+    %{game | turns_left: game.turns_left - 1, game_state: :bad_guess}
+  end
+
+  defp maybe_won(_won? = true), do: :won
+  defp maybe_won(_), do: :good_guess
 
   ###############################################
 

@@ -47,4 +47,44 @@ defmodule HangmanImplGameTest do
     {game, _tally} = Game.make_move(game, "x")
     assert game.game_state == :already_used
   end
+
+  test "A guess is detected correctly as good or bad" do
+    game = Game.new_game("hello")
+    {_game, tally} = Game.make_move(game, "h")
+    assert tally.game_state == :good_guess
+    {_game, tally} = Game.make_move(game, "p")
+    assert tally.game_state == :bad_guess
+    {_game, tally} = Game.make_move(game, "l")
+    assert tally.game_state == :good_guess
+    {_game, tally} = Game.make_move(game, "i")
+    assert tally.game_state == :bad_guess
+  end
+
+  test "guessing a word correctly" do
+    [
+      # guess, state, turns_left, letters, used
+      ["a", :bad_guess, 6, ["_", "_", "_", "_", "_"], ["a"]],
+      ["e", :good_guess, 6, ["_", "e", "_", "_", "_"], ["a", "e"]],
+      ["s", :bad_guess, 5, ["_", "e", "_", "_", "_"], ["a", "e", "s"]],
+      ["l", :good_guess, 5, ["_", "e", "l", "l", "_"], ["a", "e", "l", "s"]],
+      ["o", :good_guess, 5, ["_", "e", "l", "l", "o"], ["a", "e", "l", "o", "s"]],
+      ["k", :bad_guess, 4, ["_", "e", "l", "l", "o"], ["a", "e", "k", "l", "o", "s"]],
+      ["h", :won, 4, ["h", "e", "l", "l", "o"], ["a", "e", "h", "k", "l", "o", "s"]]
+    ]
+    |> test_sequence_of_moves("hello")
+  end
+
+  defp test_sequence_of_moves(sequence, word) do
+    game = Game.new_game(word)
+    Enum.reduce(sequence, game, &check_one_move/2)
+  end
+
+  defp check_one_move([guess, state, turns_left, letters, used], game) do
+    {game, tally} = Game.make_move(game, guess)
+    assert tally.game_state == state
+    assert tally.turns_left == turns_left
+    assert tally.letters == letters
+    assert tally.used == used
+    game
+  end
 end
