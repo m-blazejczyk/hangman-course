@@ -3,7 +3,7 @@ defmodule DictionaryTest do
   doctest Dictionary
 
   test "random word is returned" do
-    words = Dictionary.start()
-    assert is_binary(Dictionary.random_word(words))
+    {:ok, dict} = Dictionary.start_link()
+    assert is_binary(Dictionary.random_word(dict))
   end
 end
