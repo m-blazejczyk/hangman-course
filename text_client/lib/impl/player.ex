@@ -1,34 +1,33 @@
 defmodule TextClient.Impl.Player do
   @type game :: Hangman.game()
   @type tally :: Hangman.Type.tally()
-  @typep state :: {game(), tally()}
 
   @spec start() :: :ok
   def start() do
     game = Hangman.new_game()
     tally = Hangman.tally(game)
-    interact({game, tally})
+    interact(game, tally)
   end
 
   # @type state :: :initializing | :won | :lost | :good_guess | :bad_guess | :already_used
-  @spec interact(state()) :: :ok
-  defp interact({_game, tally = %{game_state: :won}}) do
+  @spec interact(game(), tally()) :: :ok
+  defp interact(_game, tally = %{game_state: :won}) do
     IO.puts("Congratulations ‒ you won!")
     IO.puts("The word was: #{tally.letters |> Enum.join()}")
   end
 
-  defp interact({_game, tally = %{game_state: :lost}}) do
+  defp interact(_game, tally = %{game_state: :lost}) do
     IO.puts("Sorry, you lost  :(")
     IO.puts("The word was: #{tally.letters |> Enum.join()}")
   end
 
-  defp interact({game, tally}) do
+  defp interact(game, tally) do
     IO.puts("")
     IO.puts(feedback_for(tally))
     IO.puts(explain_tally(tally))
 
-    Hangman.make_move(game, enter_guess())
-    |> interact()
+    tally = Hangman.make_move(game, enter_guess())
+    interact(game, tally)
   end
 
   @spec feedback_for(tally()) :: String.t()
