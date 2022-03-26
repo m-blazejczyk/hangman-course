@@ -1,4 +1,4 @@
-defmodule HtmlClientWeb.PageController do
+defmodule HtmlClientWeb.HangmanController do
   use HtmlClientWeb, :controller
 
   def index(conn, _params) do
