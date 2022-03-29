@@ -20,6 +20,8 @@ defmodule HtmlClientWeb.Router do
     get "/", HangmanController, :index
     post "/", HangmanController, :new
     put "/", HangmanController, :update
+
+    get "/current", HangmanController, :show
   end
 
   # Other scopes may use custom stacks.
