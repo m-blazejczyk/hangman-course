@@ -6,7 +6,7 @@ defmodule Hangman.Runtime.Server do
   @type t :: pid
 
   # 1 hour
-  @idle_timeout 1 * 60 * 1000
+  @idle_timeout 1 * 60 * 60 * 1000
 
   ### client process
 
